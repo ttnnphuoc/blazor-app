@@ -5,8 +5,11 @@ namespace BlazorApp1.DBContext
 {
     public class PizzaStoreContext: DbContext
     {
-        public PizzaStoreContext(DbContextOptions options) : base(options)
+        public IConfiguration Configuration { get; }
+
+        public PizzaStoreContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
+            Configuration = configuration;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
