@@ -14,28 +14,18 @@ using Microsoft.JSInterop;
 using BlazorApp1;
 using BlazorApp1.Shared;
 using BlazingPizza;
-using BlazorApp1.Services.Interfaces;
-using BlazorApp1.Services.Implements;
 
-namespace BlazorApp1.Pages
+namespace BlazorApp1.Shared
 {
-
-    public partial class Index
+    public partial class ConfigurePizzaDialog
     {
-        [Inject]
-        public IPizzaService PizzaService { get; set; }
+        [Parameter]
+        public Pizza Pizza { get; set; }
 
-        [Inject]
-        public OrderState OrderState { set; get; }
+        [Parameter]
+        public EventCallback OnCancel { get; set; }
 
-
-        private IEnumerable<PizzaSpecial> todaysPizzas;
-        private Order order => OrderState.Order;
-
-
-        protected override async Task OnInitializedAsync()
-        {
-            todaysPizzas = await PizzaService.GetPizzasAsync();
-        }
+        [Parameter]
+        public EventCallback OnConfirm { get; set; }
     }
 }

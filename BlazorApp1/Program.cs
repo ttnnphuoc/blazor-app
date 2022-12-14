@@ -1,12 +1,15 @@
 using BlazorApp1;
 using BlazorApp1.Data;
 using BlazorApp1.DBContext;
+using BlazorApp1.Services.Implements;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var startup = new Startup(builder, builder.Environment);
 startup.ConfigureServices(builder.Services);
-
+builder.Services.AddHttpClient();
+builder.Services.AddSqlite<PizzaStoreContext>("Data Source=pizza.db");
+builder.Services.AddScoped<OrderState>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
