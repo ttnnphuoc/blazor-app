@@ -31,12 +31,13 @@ namespace BlazorApp1.Pages
         private bool isLoading;
         private string path = "";
         private BlobContainerClient blobContainerClient;
-        private List<string> listImage = new List<string>();
+        private List<BlobItem> listImage = new List<BlobItem>();
         private string msg = "";
         protected override async Task OnInitializedAsync()
         {
 
-            blobContainerClient = new BlobContainerClient("","");
+            blobContainerClient = new BlobContainerClient("", "");
+
         }
 
         private async Task LoadFiles(InputFileChangeEventArgs e)
@@ -72,12 +73,20 @@ namespace BlazorApp1.Pages
         }
         private async Task onRefesh()
         {
-            listImage = new List<string>();
             await ListBlobsFlatListing(blobContainerClient, 10);
+        }
+
+        private async Task onDelete(BlobItem item)
+        {
+            BlobClient blobClient = blobContainerClient.GetBlobClient(item.FileName);
+            await blobClient.DeleteIfExistsAsync();
+            listImage.Remove(item);
+            StateHasChanged();
         }
         private async Task ListBlobsFlatListing(BlobContainerClient blobContainerClient,
                                                int? segmentSize)
         {
+            listImage.Clear();
             try
             {
                 isLoading = true;
@@ -90,7 +99,7 @@ namespace BlazorApp1.Pages
                 {
                     foreach (var blobItem in blobPage.Values)
                     {
-                        listImage.Add("https://ttnnphuoc.blob.core.windows.net/mysample/" + blobItem.Name);
+                        listImage.Add(new BlobItem(blobItem.Name, "https://ttnnphuoc.blob.core.windows.net/mysample/" + blobItem.Name));
                     }
 
                     Console.WriteLine();
@@ -103,6 +112,17 @@ namespace BlazorApp1.Pages
                 throw;
             }
             isLoading = false;
+        }
+
+        public class BlobItem
+        {
+            public string FileName { set; get; }
+            public string Url { set; get; }
+            public BlobItem(string fileName, string url)
+            {
+                this.FileName = fileName;
+                this.Url = url;
+            }
         }
     }
 }
