@@ -23,7 +23,8 @@
     {
       @foreach (var item in listImage)
       {
-        <li style="background-image: url('@item')">
+        <li style="background-image: url('@item.Url')">
+            <button onclick="@(() => onDelete(@item))">x</button>
         </li>
       }
     }
