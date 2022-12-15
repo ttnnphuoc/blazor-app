@@ -1,0 +1,31 @@
+﻿@page "/upload"
+
+
+<div class="upload">
+    <h1>Upload Files</h1>
+    <label>
+        Upload up to @maxAllowedFiles files:
+        @if(!isLoading)
+        {
+            <InputFile OnChange="@LoadFiles" multiple disabled=@(isLoading)/>
+        }
+   </label>
+   <label class="error">@msg</label>
+    @if(isLoading)
+    {
+        <p>Uploading</p>
+    }
+   <hr />
+  <h1>Image List</h1>
+  <button @onclick="@(() => onRefesh())" disabled="@isLoading" class="btn-refresh">Refresh</button>
+  <ul class="pizza-cards">
+    @if (listImage != null)
+    {
+      @foreach (var item in listImage)
+      {
+        <li style="background-image: url('@item')">
+        </li>
+      }
+    }
+  </ul>
+</div>
