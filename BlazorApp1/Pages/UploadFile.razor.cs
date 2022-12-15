@@ -36,7 +36,7 @@ namespace BlazorApp1.Pages
         protected override async Task OnInitializedAsync()
         {
 
-            blobContainerClient = new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=ttnnphuoc;AccountKey=5IdDhjf0foKEgXPArCLTo4Sx4qdZUYo5LLs+cczZy22cJVa8Rx7hNuwROiAC6rwuL0GDLM6oQiA4+AStcgNpYA==;EndpointSuffix=core.windows.net", "mysample");
+            blobContainerClient = new BlobContainerClient("","");
         }
 
         private async Task LoadFiles(InputFileChangeEventArgs e)
