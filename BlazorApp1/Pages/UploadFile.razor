@@ -7,7 +7,7 @@
         Upload up to @maxAllowedFiles files:
         @if(!isLoading)
         {
-            <InputFile OnChange="@LoadFiles" multiple disabled=@(isLoading)/>
+            <InputFile OnChange="@LoadFiles" multiple disabled=@(isLoading) accept="image/png, image/gif, image/jpeg"/>
         }
    </label>
    <label class="error">@msg</label>
