@@ -44,10 +44,13 @@ namespace BlazorApp1.Pages
             isLoading = true;
             loadedFiles.Clear();
             msg = "";
+
             foreach (var ufile in e.GetMultipleFiles(maxAllowedFiles))
             {
                 try
                 {
+                    path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images", ufile.Name);
+
                     BlobClient blobClient = blobContainerClient.GetBlobClient(ufile.Name);
                     await using (FileStream fs = new(path, FileMode.Create))
                     {
