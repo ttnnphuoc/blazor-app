@@ -36,8 +36,7 @@ namespace BlazorApp1.Pages
         protected override async Task OnInitializedAsync()
         {
 
-            blobContainerClient = new BlobContainerClient("", "");
-
+            blobContainerClient = new BlobContainerClient("","");
         }
 
         private async Task LoadFiles(InputFileChangeEventArgs e)
@@ -47,25 +46,19 @@ namespace BlazorApp1.Pages
             msg = "";
             foreach (var ufile in e.GetMultipleFiles(maxAllowedFiles))
             {
-
-                path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images", ufile.Name);
                 try
                 {
+                    BlobClient blobClient = blobContainerClient.GetBlobClient(ufile.Name);
                     await using (FileStream fs = new(path, FileMode.Create))
                     {
-                        await ufile.OpenReadStream(2000000).CopyToAsync(fs);
+                        Stream stream = ufile.OpenReadStream(2000000);
+                        await blobClient.UploadAsync(stream, true);
+                        stream.Close();
                     }
-
-                    BlobClient blobClient = blobContainerClient.GetBlobClient(ufile.Name);
-
-                    FileStream fileStream = File.OpenRead(path);
-                    await blobClient.UploadAsync(fileStream, true);
-                    fileStream.Close();
-                    File.Delete(path);
                 }
                 catch (Exception exp)
                 {
-                    msg = "Max size is 2MB";
+                    msg = "Max size is 2MB " + exp.Message;
                 }
             }
 
